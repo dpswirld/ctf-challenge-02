@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leet Oracle - BTC Price</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.1;
+        }
+
+        .grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .price-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crypto-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .crypto-icon {
+            width: 60px;
+            height: 60px;
+            background: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-right: 1rem;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.10);
+        }
+
+        .crypto-name {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .price {
+            font-size: 4rem;
+            font-weight: 800;
+            margin: 1rem 0;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .price-change {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .positive {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+        }
+
+        .negative {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff4444;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+        }
+
+        .last-updated {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 1rem;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .status-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            background: #00ff00;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .price {
+                font-size: 2.5rem;
+            }
+            
+            .price-card {
+                padding: 2rem;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="grid"></div>
+    </div>
+    
+    <div class="status-indicator"></div>
+    
+    <div class="container">
+        <h1 class="title">Leet Oracle</h1>
+        
+        <div class="price-card">
+            <div class="crypto-info">
+                <div class="crypto-icon">ℏ</div>
+                <div class="crypto-name">Hedera (HBAR)</div>
+            </div>
+            
+            <div class="price" id="btc-price">$0.00</div>
+            
+            <div class="price-change" id="price-change">+0.00%</div>
+            
+            <div class="last-updated" id="last-updated">
+                Last updated: <span id="timestamp">--</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPrice = 0.15;
+        let previousPrice = 0.15;
+
+        async function updatePrice() {
+            const priceElement = document.getElementById('btc-price');
+            const changeElement = document.getElementById('price-change');
+            const timestampElement = document.getElementById('timestamp');
+
+            try {
+                const response = await fetch("/api/hbar-price?url=https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=HBAR&convert=USD");
+                const data = await response.json();
+                previousPrice = currentPrice;
+                currentPrice = data.data.HBAR.quote.USD.price.toFixed(4);
+                
+                // Format price
+                const formattedPrice = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 4,
+                    maximumFractionDigits: 4
+                }).format(currentPrice);
+                priceElement.textContent = formattedPrice;
+
+                // Format change
+                const change = ((currentPrice - previousPrice) / previousPrice) * 100;
+                const changeText = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+                changeElement.textContent = changeText;
+                changeElement.className = `price-change ${change >= 0 ? 'positive' : 'negative'}`;
+
+                // Update timestamp
+                const now = new Date();
+                timestampElement.textContent = now.toLocaleTimeString();
+
+                // Add pulse animation
+                priceElement.classList.add('pulse');
+                setTimeout(() => {
+                    priceElement.classList.remove('pulse');
+                }, 1000);
+            } catch (error) {
+                priceElement.textContent = 'API Error';
+                changeElement.textContent = '';
+                timestampElement.textContent = '--';
+            }
+        }
+
+        // Update price immediately and then every 30 seconds
+        updatePrice();
+        setInterval(updatePrice, 60000);
+    </script>
+</body>
+</html>

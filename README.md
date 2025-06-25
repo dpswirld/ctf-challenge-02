@@ -2,13 +2,22 @@
 
 ## 📜 Story
 
-TODO
+The team at **NovaFi**, a rising DeFi protocol, recently launched a public beta of their **HBAR/USD oracle service**, a critical backend used to calculate prices and trigger smart contract executions across the platform.
+
+The oracle works by accepting price feeds from a handful of trusted sources — sources that are periodically queried via HTTP and processed on-chain through a custom wrapped HBAR contract.
+
+To improve transparency, NovaFi also deployed a web-based interface where users can watch the current HBAR price updates in real time.
+
+But beneath the surface, something isn't right.
+
+An internal endpoint — not meant to be public — was left exposed. It’s protected by network rules and only accessible from within the host system. The developers assumed it was unreachable from the outside.
 
 ---
 
 ## 🎯 Your Mission
 
-TODO
+Your objective is to **leverage the oracle web page** and find a way to extract critical data from the oracle internal network endpoint.
+
 ---
 
 ## 🚀 Setup

@@ -21,5 +21,5 @@ Your objective is to **leverage the oracle web page** and find a way to extract 
 ---
 
 ## 🚀 Setup
-1. docker build -t ctf-challenge-02 .
-2. docker run -it -d --name leet-oracle -p 3000:3000 ctf-challenge-02
+1. docker pull diogopereira938/ctf-challenges:ctf-02
+2. docker run -it -d --name leet-oracle -p 3000:3000 diogopereira938/ctf-challenges:ctf-02

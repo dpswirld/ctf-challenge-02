@@ -26,7 +26,7 @@ app.get('/api', (req, res) => {
 });
 
 app.get('/api/.admin', (req, res) => {
-    res.status(403).json({
+    res.json({
             status: 'error',
             message: 'Access denied. This endpoint is only accessible from localhost @ 3001.'
         });

@@ -1,0 +1,9 @@
+{
+  "name": "challenge-02-leet-oracle",
+  "image": "diogopereira938/ctf-challenges:ctf-02",
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb"
+  },
+  "forwardPorts": [ 3000 ]
+}

@@ -7,6 +7,9 @@ WORKDIR /usr/src/app
 # 3. Copy application code
 COPY . .
 
+# Install dependencies
+RUN npm install
+
 # 4. Expose the port your Express app listens on
 EXPOSE 3000
 

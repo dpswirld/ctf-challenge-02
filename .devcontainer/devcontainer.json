@@ -1,9 +1,10 @@
 {
   "name": "challenge-02-leet-oracle",
-  "image": "diogopereira938/ctf-challenges:ctf-02",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
   "hostRequirements": {
     "cpus": 4,
     "memory": "8gb"
   },
+  "postStartCommand": "docker pull diogopereira938/ctf-challenges:ctf-02 && docker run -it -d --name leet-oracle -p 3000:3000 diogopereira938/ctf-challenges:ctf-02",
   "forwardPorts": [ 3000 ]
 }
